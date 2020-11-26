@@ -3,12 +3,10 @@ on:
   push:
 
 jobs:
-  tests:
+  units:
+    name: Units
     if: github.repository == 'opf/openproject'
     runs-on: [self-hosted,public]
-    strategy:
-      matrix:
-        suite: [units, features]
     timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
@@ -25,4 +23,26 @@ jobs:
       run: |
         cp .env.example .env
         docker-compose build ci
-        docker-compose run ci setup run-${{ matrix.suite }}
+        docker-compose run ci setup run-units
+  features:
+    needs: units
+    name: Features
+    if: github.repository == 'opf/openproject'
+    runs-on: [self-hosted,public]
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v2
+    - name: cache
+      uses: actions/cache@v2
+      with:
+        path: /tmp/${{ github.sha }}
+        key: ${{ runner.os }}-tests
+    - name: test
+      env:
+        CI_JOBS: 8
+        CI_CACHE_PATH: "/tmp/${{ github.sha }}/"
+        LOCAL_DEV_CHECK: 1
+      run: |
+        cp .env.example .env
+        docker-compose build ci
+        docker-compose run ci setup run-features
