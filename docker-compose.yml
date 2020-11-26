@@ -182,7 +182,7 @@ services:
     container_name: selenium-hub
     hostname: selenium-hub
     environment:
-      GRID_MAX_SESSION: 16
+      GRID_MAX_SESSION: "${CI_JOBS:-4}"
     depends_on:
       - chrome
       - firefox
@@ -203,8 +203,9 @@ services:
       HUB_PORT: 4444
       SCREEN_WIDTH: 1920
       SCREEN_HEIGHT: 1080
-      # NODE_MAX_INSTANCES: 5
-      # NODE_MAX_SESSION: 5
+      # in case we want multiple sessions per container
+      NODE_MAX_INSTANCES: "${CI_JOBS:-4}"
+      NODE_MAX_SESSION: "${CI_JOBS:-4}"
 
   firefox:
     image: selenium/node-firefox-debug:latest
@@ -219,6 +220,9 @@ services:
       HUB_PORT: 4444
       SCREEN_WIDTH: 1920
       SCREEN_HEIGHT: 1080
+      # in case we want multiple sessions per container
+      NODE_MAX_INSTANCES: "${CI_JOBS:-4}"
+      NODE_MAX_SESSION: "${CI_JOBS:-4}"
 
   opera:
     image: selenium/node-opera-debug:latest
@@ -233,4 +237,6 @@ services:
       HUB_PORT: 4444
       SCREEN_WIDTH: 1920
       SCREEN_HEIGHT: 1080
-
+      # in case we want multiple sessions per container
+      NODE_MAX_INSTANCES: "${CI_JOBS:-4}"
+      NODE_MAX_SESSION: "${CI_JOBS:-4}"
