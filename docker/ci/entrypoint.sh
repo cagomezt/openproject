@@ -9,14 +9,11 @@ echo "create database app; create user app with superuser encrypted password 'p4
 
 mkdir -p /usr/local/bundle
 mkdir -p /home/$USER/openproject/frontend/node_modules
-# mkdir -p /home/$USER/openproject/public/assets/frontend
 mkdir -p /home/$USER/openproject/tmp
 
 chown $USER:$USER /usr/local/bundle
 chown $USER:$USER /home/$USER/openproject/frontend/node_modules
-# chown $USER:$USER /home/$USER/openproject/public/assets/frontend
 chown $USER:$USER /home/$USER/openproject/tmp
-# chown -R $USER:$USER /home/$USER/openproject
 
 cp docker/ci/database.yml config/
 

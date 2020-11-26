@@ -39,7 +39,8 @@ jobs:
         key: ${{ runner.os }}-tests
     - name: test
       env:
-        CI_JOBS: 8
+        # try to get a stable suite first, then parallelize
+        CI_JOBS: 1
         CI_CACHE_PATH: "/tmp/${{ github.sha }}/"
         LOCAL_DEV_CHECK: 1
       run: |
