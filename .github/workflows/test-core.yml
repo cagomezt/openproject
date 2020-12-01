@@ -24,6 +24,9 @@ jobs:
         cp .env.example .env
         docker-compose build ci
         docker-compose run ci setup run-units
+    - name: cleanup
+      if: ${{ always() }}
+      run: docker-compose down --remove-orphans -t 10
   features:
     needs: units
     name: Features
@@ -47,3 +50,6 @@ jobs:
         cp .env.example .env
         docker-compose build ci
         docker-compose run ci setup run-features
+    - name: cleanup
+      if: ${{ always() }}
+      run: docker-compose down --remove-orphans -t 10
