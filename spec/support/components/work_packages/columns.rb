@@ -74,7 +74,12 @@ module Components
                             results_selector: '.ng-dropdown-panel-items',
                             query: name
 
-        apply if save_changes
+        if save_changes
+          apply
+          within ".work-package-table" do
+            expect(page).to have_link(name)
+          end
+        end
       end
 
       def remove(name, save_changes: true)

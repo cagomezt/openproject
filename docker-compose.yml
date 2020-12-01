@@ -5,6 +5,7 @@ networks:
   testing:
 
 volumes:
+  downloads-test:
   pgdata:
   tmp:
   opdata:
@@ -162,6 +163,7 @@ services:
       SELENIUM_GRID_URL: http://selenium-hub:4444/wd/hub
       CAPYBARA_DYNAMIC_HOSTNAME: 0
       CAPYBARA_APP_HOSTNAME: ci
+      CAPYBARA_DOWNLOADED_FILE_DIR: /home/seluser/Downloads
       OPENPROJECT_DISABLE_DEV_ASSET_PROXY: 1
       OPENPROJECT_TESTING_NO_HEADLESS: "true"
       JOBS: "${CI_JOBS:-4}"
@@ -171,6 +173,7 @@ services:
       - ".:/home/dev/openproject"
       - "${CI_CACHE_PATH:-/tmp/}op-bundle:/usr/local/bundle"
       - "${CI_CACHE_PATH:-/tmp/}op-node:/home/dev/openproject/frontend/node_modules"
+      - "downloads-test:/home/seluser/Downloads"
     networks:
       - testing
     depends_on:
@@ -196,6 +199,7 @@ services:
     image: selenium/node-chrome-debug:latest
     volumes:
       - /dev/shm:/dev/shm
+      - "downloads-test:/home/seluser/Downloads"
     networks:
       - testing
     ports:
@@ -213,6 +217,7 @@ services:
     image: selenium/node-firefox-debug:latest
     volumes:
       - /dev/shm:/dev/shm
+      - "downloads-test:/home/seluser/Downloads"
     networks:
       - testing
     ports:
@@ -230,6 +235,7 @@ services:
     image: selenium/node-opera-debug:latest
     volumes:
       - /dev/shm:/dev/shm
+      - "downloads-test:/home/seluser/Downloads"
     networks:
       - testing
     ports:

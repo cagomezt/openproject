@@ -30,7 +30,7 @@
 # where this code was adapted
 
 module DownloadedFile
-  PATH = Rails.root.join('tmp/test/downloads')
+  PATH = Pathname.new(ENV.fetch("CAPYBARA_DOWNLOADED_FILE_DIR", Rails.root.join('tmp/test/downloads')))
 
   extend self
 
@@ -39,7 +39,7 @@ module DownloadedFile
   end
 
   def download
-    downloads.first
+    PATH.children.sort_by(&File.method(:ctime)).last
   end
 
   def download_content(ensure_content = true)
@@ -73,6 +73,8 @@ module DownloadedFile
   end
 
   def clear_downloads
-    FileUtils.rm_f(downloads)
+    downloads.each do |download|
+      FileUtils.rm_f(download)
+    end
   end
 end
